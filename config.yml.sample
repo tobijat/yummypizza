@@ -1,0 +1,4 @@
+db_host: <database host>
+db_user: <database user>
+db_pass: <database pass>
+klm_url: <url to klm file>
