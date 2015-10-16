@@ -45,6 +45,7 @@ function populatePizzaList($queryResult) {
         $pizzaList[$i]["mapsLink"] = "https://maps.google.com/maps?q=$lat,$lon&ll=$lat,$lon&z=17";
         $pizzaList[$i]["name"] = $item["name"];
         $pizzaList[$i]["grade"] = $item["grade"];
+        $pizzaList[$i]["distance"] = round($item["distance"], 2);
         $i++;
     }
 
