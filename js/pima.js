@@ -24,11 +24,11 @@ function showPizza(result) {
         console.log("Error: " + data.errormessage);
         return;
     }
+    $( "div.jumbotron div.container").remove();
     if(data.pizzalist.length < 1) {
-        console.log("Error: No yummy pizza found around you!");
+        $( "div.jumbotron").append('<div class="container"><h1>Awww.. Seems there is no yummy pizza around you! So sorry!</h1></div>');
         return;
     }
-    $( "div.jumbotron div.container").remove();
     $.each(data.pizzalist, function(index, value) {
         addPizzaElement(value);
     });
