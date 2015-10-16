@@ -22,4 +22,5 @@ Try it out here: http://pizza.tobijat.at
 * Let user choose the radius
 * Let user filter by rating
 * Include a preview of the map
+* Error handling
 * Many more..
