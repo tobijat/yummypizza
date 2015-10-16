@@ -14,7 +14,7 @@ function getMeAllOfThePizza(position) {
     $.post(
         "getNearbyPizza.php",
         { curlat: position.coords.latitude, curlon: position.coords.longitude },
-        $.proxy(this.showPizza, this)
+        $.proxy(showPizza)
     );
 }
 
