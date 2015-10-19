@@ -39,7 +39,7 @@ function addPizzaElement(item) {
     $( "div.jumbotron").append(
         '<div class="container">' +
         '<h1>' + item.name + '</h1>' +
-        '<p>Rating: ' + item.grade + ' | Distance: ' + item.distance + ' km</p>' +
+        '<p>Distance: ' + item.distance + 'km | Rating: ' + item.rating + '</p>' +
         '<p><a class="btn btn-primary btn-lg" target="new" href="' + item.mapsLink + '" role="button">Show on map &raquo;</a></p>' +
         '</div>');
 }

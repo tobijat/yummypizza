@@ -35,7 +35,8 @@ function retrieveNearbyPizza($db, $lat, $lon, $radius = 10, $limit = 10) {
                  visit.quality, visit.price,
                  (6371 * acos(cos(radians('$lat')) * cos(radians(location.latitude))
                   * cos(radians(location.longitude) - radians('$lon')) + sin(radians('$lat'))
-                  * sin(radians(location.latitude)))) AS distance
+                  * sin(radians(location.latitude)))) AS distance,
+                 ((visit.quality + visit.price + location.grade) / 3) AS rating
           FROM location, visit
           WHERE
           visit.location=location.id
@@ -51,7 +52,8 @@ function retrieveBestPizza($db, $lat, $lon, $radius = 10, $limit = 10) {
                  visit.quality, visit.price,
                  (6371 * acos(cos(radians('$lat')) * cos(radians(location.latitude))
                   * cos(radians(location.longitude) - radians('$lon')) + sin(radians('$lat'))
-                  * sin(radians(location.latitude)))) AS distance
+                  * sin(radians(location.latitude)))) AS distance,
+                 ((visit.quality + visit.price + location.grade) / 3) AS rating
           FROM location, visit
           WHERE
           visit.location=location.id AND
@@ -88,6 +90,7 @@ function populatePizzaList($queryResult) {
         $pizzaList[$i]["name"] = $item["name"];
         $pizzaList[$i]["grade"] = $item["grade"];
         $pizzaList[$i]["distance"] = round($item["distance"], 2);
+        $pizzaList[$i]["rating"] = round($item["rating"], 1);
         $pizzaList[$i]["quality"] = $item["quality"];
         $pizzaList[$i]["price"] = $item["price"];
         $i++;
