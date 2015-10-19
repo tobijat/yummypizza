@@ -73,7 +73,7 @@ function retrieveYummyPizza($db, $lat, $lon, $radius = 10, $limit = 10) {
           WHERE visit.location = location.id
           HAVING distance < 5
           ORDER BY ((distance + rating) / 2) ASC
-          LIMIT 0 , 20;";
+          LIMIT 0 , 10;";
 
     return populatePizzaList($db->fetchAll($q));
 }

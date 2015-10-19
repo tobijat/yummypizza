@@ -6,7 +6,8 @@ function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(getMeAllOfThePizza);
     } else {
-        alert("Geolocation is not supported by this browser.");
+        $( "div.jumbotron div.container").remove();
+        $( "div.jumbotron").append('<div class="container"><h1>Awww.. Your browser does not tell me your location. I guess you have to find some yummy pizza without my help.</h1></div>');
     }
 }
 
