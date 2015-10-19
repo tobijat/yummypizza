@@ -25,10 +25,10 @@ function showPizza(result) {
         return;
     }
     $( "div.jumbotron div.container").remove();
-    if(data.pizzalist.length < 1) {
-        $( "div.jumbotron").append('<div class="container"><h1>Awww.. Seems there is no yummy pizza around you! So sorry!</h1></div>');
-        return;
+    if(data.message != "") {
+        $( "div.jumbotron").append('<div class="container"><h1>' + data.message + '</h1></div>');
     }
+
     $.each(data.pizzalist, function(index, value) {
         addPizzaElement(value);
     });

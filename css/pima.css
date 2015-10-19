@@ -11,3 +11,7 @@ body {
 .jumbotron .container:nth-of-type(even) {
     background-color: #e3e3e3;
 }
+
+.notice {
+    background-color: #e4b9c0;
+}
