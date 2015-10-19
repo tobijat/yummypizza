@@ -11,7 +11,7 @@ Try it out here: http://pizza.tobijat.at
 * Determine your current location (you have to allow this in your browser)
 * Show a list of max. 10 nearby pizza places within a max. radius of 10 km
 * Show the name of the pizza place
-* Show the rating (1=best, 4=worst) of the pizza place
+* Show the overall rating of the place, based on quality- and price-rating
 * Show distance to the pizza place
 * Provide a link to Google Maps for each pizza place
 * List is updated from the custom map every hour
@@ -22,5 +22,4 @@ Try it out here: http://pizza.tobijat.at
 * Let user choose the radius
 * Let user filter by rating
 * Include a preview of the map
-* Error handling
 * Many more..
