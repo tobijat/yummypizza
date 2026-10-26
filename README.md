@@ -1,25 +1,49 @@
 # Yummy Pizza!
 
-## What is this?
-This app gives you nearby pizza places from [Snaterlicious](https://github.com/snaterlicious)'
-famous [PizzaMap](https://www.google.com/maps/d/u/0/viewer?ll=52.493651%2C13.328133&spn=0.19628%2C0.528374&msa=0&mid=z2Qplwtk3f0Q.kaiyuAkHjF00).
+Nearby pizza places from [snaterlicious](https://github.com/snaterlicious)' [Pizza map](https://www.google.com/maps/d/viewer?mid=z2Qplwtk3f0Q.kaiyuAkHjF00).
 
-## Where can I see it?
-Try it out here: http://pizza.tobijat.at
+The site is PHP 8.5 and MySQL/MariaDB. The page asks for your location, then lists up to 10 places. Scores are school grades: 1 is best.
 
-## What are the current features?
-* Determine your current location (you have to allow this in your browser)
-* Show a list of max. 10 nearby pizza places within a max. radius of 10 km
-* Show the name of the pizza place
-* Show the overall rating of the place, based on quality- and price-rating
-* Show distance to the pizza place
-* Provide a link to Google Maps for each pizza place
-* List is updated from the custom map every hour
+## Run it locally
 
-## What are possible future features?
-* Show quality rating of the pizza place
-* Show price rating of the pizza place
-* Let user choose the radius
-* Let user filter by rating
-* Include a preview of the map
-* Many more..
+PHP 8.5 with `pdo_mysql`, plus MySQL or MariaDB:
+
+```powershell
+copy config.yml.sample config.yml
+php update.php
+php -S localhost:8000
+```
+
+Open http://localhost:8000 and allow location, or use Alexanderplatz.
+
+`db_name` can be omitted. The importer then uses `db_user` as the database name, which is what the old config did.
+
+Docker Compose runs PHP 8.5 and a database without a local PHP install:
+
+```powershell
+docker compose up --build -d
+docker compose exec web php update.php
+```
+
+Open http://localhost:8095.
+
+`php update.php --dry-run` downloads and parses the map without writing to the database. The same command is the hourly refresh.
+
+## Database
+
+The `location` and `visit` tables stay. `schema.sql` creates them on a new database and does nothing if they already exist.
+
+On import, two adjustments are applied only when the old table is too strict:
+
+- `visit.date` becomes nullable, because one place has no visit date
+- `visit.description` is widened to `TEXT` when it is a short `VARCHAR`
+
+Places with several visits now get one `visit` row each. The list uses the latest visit. Re-running the import replaces rows that disappeared from the map.
+
+## Where the data comes from
+
+KML is still the right source. The quality score, value score, and pin colour live in that My Map as description text and icon style. Google Places does not have those notes. The importer reads:
+
+https://www.google.com/maps/d/kml?mid=z2Qplwtk3f0Q.kaiyuAkHjF00&forcekml=1
+
+A description can contain more than one visit, separated by `|` or `<br>`, including a non-breaking space before `Q:` / `PL:`. Each scored visit is stored. A visit without both scores is reported and skipped.

@@ -1,4 +1,6 @@
-db_host: <database host>
-db_user: <database user>
-db_pass: <database pass>
-klm_url: <url to klm file>
+db_host: 127.0.0.1
+db_port: 3306
+db_user: yummypizza
+db_pass: yummypizza
+db_name: yummypizza
+klm_url: https://www.google.com/maps/d/kml?mid=z2Qplwtk3f0Q.kaiyuAkHjF00&forcekml=1

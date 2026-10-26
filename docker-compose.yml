@@ -1,0 +1,35 @@
+services:
+  db:
+    image: mariadb:11
+    environment:
+      MARIADB_DATABASE: yummypizza
+      MARIADB_USER: yummypizza
+      MARIADB_PASSWORD: yummypizza
+      MARIADB_ROOT_PASSWORD: yummypizza
+    volumes:
+      - dbdata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+
+  web:
+    build: .
+    ports:
+      - "8095:80"
+    environment:
+      DB_HOST: db
+      DB_USER: yummypizza
+      DB_PASS: yummypizza
+      DB_NAME: yummypizza
+      KML_URL: https://www.google.com/maps/d/kml?mid=z2Qplwtk3f0Q.kaiyuAkHjF00&forcekml=1
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./:/var/www/html
+
+volumes:
+  dbdata:

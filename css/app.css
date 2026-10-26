@@ -1,0 +1,242 @@
+:root {
+    --paper: #f4efe6;
+    --paper-deep: #ebe3d4;
+    --card: #fffaf3;
+    --ink: #261910;
+    --muted: #6d5e52;
+    --line: #e3d5c4;
+    --tomato: #c83c24;
+    --tomato-dark: #9d2c1a;
+    --blue: #2c6eaa;
+    --green: #2e7d4f;
+    --yellow: #9a7209;
+    --red: #c83c24;
+    color-scheme: light;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top left, rgba(200, 60, 36, 0.08), transparent 32rem),
+        var(--paper);
+    color: var(--ink);
+    font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.5;
+}
+
+h1, h2, .rank, .status {
+    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+    font-weight: 600;
+}
+
+a {
+    color: var(--tomato-dark);
+}
+
+a:hover {
+    color: var(--tomato);
+}
+
+.wrap {
+    width: min(44rem, calc(100% - 2rem));
+    margin: 0 auto;
+}
+
+.site-header {
+    padding: 2.5rem 0 1.5rem;
+    border-top: 0.7rem solid var(--tomato);
+}
+
+h1 {
+    margin: 0;
+    font-size: clamp(2.4rem, 7vw, 4.2rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: end;
+    margin-top: 0.5rem;
+}
+
+.field {
+    display: grid;
+    gap: 0.3rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+select,
+button,
+.map-link {
+    font: inherit;
+    min-height: 2.75rem;
+}
+
+select,
+button {
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: white;
+    color: var(--ink);
+    padding: 0 1rem;
+}
+
+button {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: white;
+    cursor: pointer;
+}
+
+button:hover,
+.map-link:hover {
+    background: var(--tomato-dark);
+    border-color: var(--tomato-dark);
+}
+
+#alexanderplatz {
+    background: transparent;
+    color: var(--ink);
+}
+
+#alexanderplatz:hover {
+    background: var(--ink);
+    color: white;
+}
+
+.status {
+    margin: 1.25rem 0;
+    font-size: clamp(1.35rem, 3vw, 1.8rem);
+    line-height: 1.25;
+    color: var(--ink);
+}
+
+.status:empty {
+    display: none;
+}
+
+.results {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 2rem;
+    display: grid;
+    gap: 0.85rem;
+}
+
+.card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.85rem;
+    padding: 1.1rem 1.15rem 1.15rem;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 1.1rem;
+    box-shadow: 0 1px 0 rgba(38, 25, 16, 0.04);
+}
+
+.rank {
+    color: var(--tomato);
+    font-size: 1.6rem;
+    line-height: 1;
+    padding-top: 0.15rem;
+}
+
+.card h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0 0 0.35rem;
+    font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+}
+
+.meta {
+    margin: 0;
+}
+
+.pin {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+}
+
+.pin::before {
+    content: "";
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 50%;
+    background: var(--pin, var(--muted));
+}
+
+.pin-blue { --pin: var(--blue); }
+.pin-green { --pin: var(--green); }
+.pin-yellow { --pin: var(--yellow); }
+.pin-red { --pin: var(--red); }
+
+.when {
+    margin: 0.35rem 0 0;
+    color: var(--muted);
+}
+
+.notes {
+    margin: 0.75rem 0 1rem;
+    white-space: pre-line;
+}
+
+.map-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 1rem;
+    border-radius: 999px;
+    background: var(--tomato);
+    color: white;
+    text-decoration: none;
+}
+
+.site-footer {
+    padding: 0 0 2.5rem;
+    color: var(--muted);
+}
+
+.site-footer p {
+    margin: 0;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+:focus-visible {
+    outline: 2px solid var(--tomato);
+    outline-offset: 3px;
+}
+
+@media (max-width: 40rem) {
+    .controls button,
+    .field,
+    select {
+        width: 100%;
+    }
+}
