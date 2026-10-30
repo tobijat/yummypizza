@@ -133,7 +133,10 @@ function render(places) {
 
         const href = mapsHref(place);
         if (href !== '') {
-            const link = element('a', 'map-link', 'Show on map »');
+            const matched = /^ChIJ[\w-]{10,}$/.test(place.googlePlaceId || '');
+            const tone = place.permanentlyClosed ? 'closed' : (matched ? 'open' : 'coordinates');
+            const label = matched ? 'Show on map »' : 'Show coordinates on map';
+            const link = element('a', 'map-link map-link-' + tone, label);
             link.href = href;
             link.target = '_blank';
             link.rel = 'noopener noreferrer';

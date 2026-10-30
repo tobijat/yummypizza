@@ -99,8 +99,7 @@ button {
     cursor: pointer;
 }
 
-button:hover,
-.map-link:hover {
+button:hover {
     background: var(--tomato-dark);
     border-color: var(--tomato-dark);
 }
@@ -206,11 +205,43 @@ button:hover,
 .map-link {
     display: inline-flex;
     align-items: center;
-    padding: 0 1rem;
+    padding: 0.35rem 1rem;
     border-radius: 999px;
     background: var(--tomato);
     color: white;
     text-decoration: none;
+}
+
+.map-link:hover,
+.map-link:focus-visible {
+    color: white;
+}
+
+.map-link-closed {
+    background: var(--tomato);
+}
+
+.map-link-closed:hover,
+.map-link-closed:focus-visible {
+    background: var(--tomato-dark);
+}
+
+.map-link-open {
+    background: var(--green);
+}
+
+.map-link-open:hover,
+.map-link-open:focus-visible {
+    background: color-mix(in srgb, var(--green) 82%, black);
+}
+
+.map-link-coordinates {
+    background: var(--blue);
+}
+
+.map-link-coordinates:hover,
+.map-link-coordinates:focus-visible {
+    background: color-mix(in srgb, var(--blue) 82%, black);
 }
 
 .site-footer {
