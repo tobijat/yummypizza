@@ -57,19 +57,29 @@ final class Database
         ) {
             $pdo->exec('ALTER TABLE visit MODIFY description TEXT NULL');
         }
+
+        if (self::column($pdo, 'google_place_id', 'location') === null) {
+            $pdo->exec('ALTER TABLE location ADD google_place_id VARCHAR(255) NULL');
+        }
+        if (self::column($pdo, 'google_business_status', 'location') === null) {
+            $pdo->exec('ALTER TABLE location ADD google_business_status VARCHAR(32) NULL');
+        }
+        if (self::column($pdo, 'google_status_at', 'location') === null) {
+            $pdo->exec('ALTER TABLE location ADD google_status_at DATE NULL');
+        }
     }
 
     /**
      * @return array<string, mixed>|null
      */
-    private static function column(PDO $pdo, string $name): ?array
+    private static function column(PDO $pdo, string $name, string $table = 'visit'): ?array
     {
         $statement = $pdo->prepare(
             'SELECT IS_NULLABLE, COLUMN_TYPE
              FROM information_schema.COLUMNS
              WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?'
         );
-        $statement->execute(['visit', $name]);
+        $statement->execute([$table, $name]);
         $column = $statement->fetch();
         if ($column === false) {
             return null;

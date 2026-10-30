@@ -17,6 +17,7 @@ final class Config
         public readonly string $dbPass,
         public readonly string $dbName,
         public readonly string $kmlUrl,
+        public readonly string $googlePlacesKey,
     ) {
     }
 
@@ -31,6 +32,7 @@ final class Config
             'db_port' => 'DB_PORT',
             'klm_url' => 'KML_URL',
             'kml_url' => 'KML_URL',
+            'google_places_key' => 'GOOGLE_PLACES_API_KEY',
         ] as $key => $envName) {
             $value = getenv($envName);
             if ($value !== false && $value !== '') {
@@ -70,7 +72,15 @@ final class Config
             $kmlUrl = self::DEFAULT_KML_URL;
         }
 
-        return new self($host, $port, $user, (string) ($values['db_pass'] ?? ''), $dbName, $kmlUrl);
+        return new self(
+            $host,
+            $port,
+            $user,
+            (string) ($values['db_pass'] ?? ''),
+            $dbName,
+            $kmlUrl,
+            trim((string) ($values['google_places_key'] ?? '')),
+        );
     }
 
     /**

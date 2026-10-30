@@ -114,7 +114,11 @@ function render(places) {
             'Quality: ' + place.quality + ' | Price: ' + place.price,
         );
 
-        body.append(heading, rating, ratings);
+        body.append(heading);
+        if (place.permanentlyClosed) {
+            body.append(element('p', 'closed', 'Permanently closed'));
+        }
+        body.append(rating, ratings);
 
         const when = visitLabel(place);
         if (when) {
@@ -127,11 +131,10 @@ function render(places) {
             body.append(notes);
         }
 
-        const lat = Number(place.latitude);
-        const lon = Number(place.longitude);
-        if (Number.isFinite(lat) && Number.isFinite(lon)) {
+        const href = mapsHref(place);
+        if (href !== '') {
             const link = element('a', 'map-link', 'Show on map »');
-            link.href = 'https://maps.google.com/maps?q=' + lat + ',' + lon + '&ll=' + lat + ',' + lon + '&z=17';
+            link.href = href;
             link.target = '_blank';
             link.rel = 'noopener noreferrer';
             body.append(link);
@@ -141,6 +144,25 @@ function render(places) {
         return item;
     });
     results.replaceChildren(...items);
+}
+
+function mapsHref(place) {
+    const name = String(place.name || '').trim();
+    const lat = Number(place.latitude);
+    const lon = Number(place.longitude);
+    const placeId = typeof place.googlePlaceId === 'string' ? place.googlePlaceId : '';
+    if (/^ChIJ[\w-]{10,}$/.test(placeId)) {
+        const params = new URLSearchParams({
+            api: '1',
+            query: name || 'pizza',
+            query_place_id: placeId,
+        });
+        return 'https://www.google.com/maps/search/?' + params.toString();
+    }
+    if (Number.isFinite(lat) && Number.isFinite(lon)) {
+        return 'https://maps.google.com/maps?q=' + lat + ',' + lon + '&ll=' + lat + ',' + lon + '&z=17';
+    }
+    return '';
 }
 
 function pin(place) {

@@ -18,7 +18,9 @@ try {
     $radius = readRadius();
 
     $config = Config::load(__DIR__ . '/config.yml');
-    $finder = new PizzaFinder(Database::connect($config));
+    $pdo = Database::connect($config);
+    Database::ensureSchema($pdo);
+    $finder = new PizzaFinder($pdo);
     echo json_encode(
         $finder->nearby($latitude, $longitude, $radius),
         JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE | JSON_THROW_ON_ERROR,

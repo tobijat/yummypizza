@@ -187,6 +187,12 @@ button:hover,
 .pin-yellow { --pin: var(--yellow); }
 .pin-red { --pin: var(--red); }
 
+.closed {
+    margin: 0 0 0.35rem;
+    color: var(--tomato-dark);
+    font-weight: 600;
+}
+
 .when {
     margin: 0.35rem 0 0;
     color: var(--muted);

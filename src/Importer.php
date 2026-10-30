@@ -79,10 +79,15 @@ final class Importer
         }
 
         $insertLocation = $this->pdo->prepare(
-            'INSERT INTO location (unique_location, name, grade, latitude, longitude) VALUES (?, ?, ?, ?, ?)'
+            'INSERT INTO location (unique_location, name, grade, latitude, longitude, google_place_id, google_business_status, google_status_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
         );
         $updateLocation = $this->pdo->prepare(
-            'UPDATE location SET name = ?, grade = ?, latitude = ?, longitude = ? WHERE id = ?'
+            'UPDATE location
+             SET name = ?, grade = ?, latitude = ?, longitude = ?,
+                 google_place_id = COALESCE(?, google_place_id),
+                 google_business_status = COALESCE(?, google_business_status),
+                 google_status_at = COALESCE(?, google_status_at)
+             WHERE id = ?'
         );
         $insertVisit = $this->pdo->prepare(
             'INSERT INTO visit (location, `date`, description, quality, price, unique_visit) VALUES (?, ?, ?, ?, ?, ?)'
@@ -104,22 +109,26 @@ final class Importer
             $seenLocations[$place->uniqueLocation] = true;
             if (isset($locationIds[$place->uniqueLocation])) {
                 $locationId = $locationIds[$place->uniqueLocation];
-                $updateLocation->execute([
-                    $place->name,
-                    $place->grade,
-                    $place->latitude,
-                    $place->longitude,
-                    $locationId,
-                ]);
+                $updateLocation->bindValue(1, $place->name);
+                $updateLocation->bindValue(2, $place->grade, PDO::PARAM_INT);
+                $updateLocation->bindValue(3, $place->latitude);
+                $updateLocation->bindValue(4, $place->longitude);
+                $this->bindPlaceId($updateLocation, 5, $place->googlePlaceId);
+                $this->bindPlaceId($updateLocation, 6, $place->googleBusinessStatus);
+                $this->bindPlaceId($updateLocation, 7, $place->googleStatusAt);
+                $updateLocation->bindValue(8, $locationId, PDO::PARAM_INT);
+                $updateLocation->execute();
                 $refreshedLocations++;
             } else {
-                $insertLocation->execute([
-                    $place->uniqueLocation,
-                    $place->name,
-                    $place->grade,
-                    $place->latitude,
-                    $place->longitude,
-                ]);
+                $insertLocation->bindValue(1, $place->uniqueLocation);
+                $insertLocation->bindValue(2, $place->name);
+                $insertLocation->bindValue(3, $place->grade, PDO::PARAM_INT);
+                $insertLocation->bindValue(4, $place->latitude);
+                $insertLocation->bindValue(5, $place->longitude);
+                $this->bindPlaceId($insertLocation, 6, $place->googlePlaceId);
+                $this->bindPlaceId($insertLocation, 7, $place->googleBusinessStatus);
+                $this->bindPlaceId($insertLocation, 8, $place->googleStatusAt);
+                $insertLocation->execute();
                 $locationId = (int) $this->pdo->lastInsertId();
                 $locationIds[$place->uniqueLocation] = $locationId;
                 $newLocations++;
@@ -153,6 +162,16 @@ final class Importer
             $removedVisits,
             $removedLocations,
         );
+    }
+
+    private function bindPlaceId(PDOStatement $statement, int $index, ?string $placeId): void
+    {
+        if ($placeId === null) {
+            $statement->bindValue($index, null, PDO::PARAM_NULL);
+            return;
+        }
+
+        $statement->bindValue($index, $placeId);
     }
 
     private function executeVisit(PDOStatement $statement, int $locationId, Visit $visit): void

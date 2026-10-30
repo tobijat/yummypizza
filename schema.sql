@@ -7,6 +7,9 @@ CREATE TABLE IF NOT EXISTS location (
     grade TINYINT NOT NULL,
     latitude DOUBLE NOT NULL,
     longitude DOUBLE NOT NULL,
+    google_place_id VARCHAR(255) NULL,
+    google_business_status VARCHAR(32) NULL,
+    google_status_at DATE NULL,
     PRIMARY KEY (id),
     UNIQUE KEY unique_location (unique_location)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

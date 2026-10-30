@@ -4,3 +4,5 @@ db_user: yummypizza
 db_pass: yummypizza
 db_name: yummypizza
 klm_url: https://www.google.com/maps/d/kml?mid=z2Qplwtk3f0Q.kaiyuAkHjF00&forcekml=1
+# Optional. A Places API (New) key lets update.php attach each restaurant to a Google place.
+# google_places_key: your-key

@@ -47,3 +47,15 @@ KML is still the right source. The quality score, value score, and pin colour li
 https://www.google.com/maps/d/kml?mid=z2Qplwtk3f0Q.kaiyuAkHjF00&forcekml=1
 
 A description can contain more than one visit, separated by `|` or `<br>`, including a non-breaking space before `Q:` / `PL:`. Each scored visit is stored. A visit without both scores is reported and skipped.
+
+## Google place links
+
+"Show on map" opens the stored coordinates. The map file does not contain Google place ids.
+
+To open the exact Google listing, add a Places API (New) key to `config.yml`:
+
+```yaml
+google_places_key: your-key
+```
+
+Then run `php update.php`. A match is stored only when the Google name shares a distinctive word with the map name and the business is within 250 metres. Matched places open that Google listing. Places that do not match keep the coordinate link. Later imports reuse stored ids. Each import also asks Google whether a matched place is permanently closed, and the results page says so. That status is checked again after a week.

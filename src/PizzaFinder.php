@@ -96,13 +96,17 @@ final class PizzaFinder
                 ranked.description,
                 ranked.visit_count,
                 ranked.distance,
-                ranked.rating
+                ranked.rating,
+                ranked.google_place_id,
+                ranked.google_business_status
             FROM (
                 SELECT
                     l.name,
                     l.grade,
                     l.latitude,
                     l.longitude,
+                    l.google_place_id,
+                    l.google_business_status,
                     v.quality,
                     v.price,
                     v.`date` AS visit_date,
@@ -155,10 +159,21 @@ final class PizzaFinder
             'price' => (int) $row['price'],
             'latitude' => (float) $row['latitude'],
             'longitude' => (float) $row['longitude'],
+            'googlePlaceId' => $this->placeId($row['google_place_id'] ?? null),
+            'permanentlyClosed' => ($row['google_business_status'] ?? '') === 'CLOSED_PERMANENTLY',
             'visitedOn' => $visited,
             'description' => $description === '' ? null : $description,
             'visits' => (int) $row['visit_count'],
         ];
+    }
+
+    private function placeId(mixed $value): ?string
+    {
+        if (!is_string($value) || preg_match('/^ChIJ[\w-]{10,}$/', $value) !== 1) {
+            return null;
+        }
+
+        return $value;
     }
 
 }

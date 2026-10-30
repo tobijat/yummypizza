@@ -28,6 +28,9 @@ final class Place
         public readonly float $longitude,
         public readonly string $uniqueLocation,
         public readonly array $visits,
+        public readonly ?string $googlePlaceId = null,
+        public readonly ?string $googleBusinessStatus = null,
+        public readonly ?string $googleStatusAt = null,
     ) {
     }
 
@@ -43,6 +46,24 @@ final class Place
             $this->longitude,
             $this->uniqueLocation,
             array_merge($this->visits, $visits),
+            $this->googlePlaceId,
+            $this->googleBusinessStatus,
+            $this->googleStatusAt,
+        );
+    }
+
+    public function withGooglePlaceId(?string $googlePlaceId, ?string $googleBusinessStatus = null, ?string $googleStatusAt = null): self
+    {
+        return new self(
+            $this->name,
+            $this->grade,
+            $this->latitude,
+            $this->longitude,
+            $this->uniqueLocation,
+            $this->visits,
+            $googlePlaceId,
+            $googleBusinessStatus,
+            $googleStatusAt,
         );
     }
 }

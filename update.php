@@ -6,6 +6,7 @@ require __DIR__ . '/src/bootstrap.php';
 
 use YummyPizza\Config;
 use YummyPizza\Database;
+use YummyPizza\GooglePlaces;
 use YummyPizza\Importer;
 use YummyPizza\KmlParser;
 
@@ -19,7 +20,7 @@ if ($isCli && in_array('--help', $argv ?? [], true)) {
 }
 
 try {
-    set_time_limit(120);
+    set_time_limit(300);
     $config = Config::load(__DIR__ . '/config.yml');
     $parser = new KmlParser();
     $parsed = $parser->parse($parser->download($config->kmlUrl));
@@ -31,6 +32,9 @@ try {
 
     $pdo = Database::connect($config);
     Database::ensureSchema($pdo);
+    if ($config->googlePlacesKey !== '') {
+        $parsed = (new GooglePlaces($config->googlePlacesKey))->attach($pdo, $parsed);
+    }
     echo (new Importer($pdo))->sync($parsed)->summary();
 } catch (Throwable $e) {
     $message = $e->getMessage() . PHP_EOL;
